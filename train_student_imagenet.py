@@ -154,6 +154,7 @@ def main():
 
     # tensorboard logger
     logger = tb_logger.Logger(logdir=opt.tb_folder, flush_secs=2)
+    os.mkdir('./save/log/')
     log = open(os.path.join('./save/log/', 'log_{}.txt'.format(opt.path_config[-11:-7])), 'w')
     print_log('save path : {}'.format("./save/"), log)
     # dataloader

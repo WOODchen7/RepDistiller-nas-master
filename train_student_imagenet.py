@@ -200,8 +200,7 @@ def main():
         raise NotImplementedError(opt.dataset)
     print("##")
     # model
-    model_t = EfficientNet.from_pretrained('efficientnet-b0',
-                                           weights_path='./pretrain_efficientNet/pretrain_efficientNet.pth')
+    model_t = EfficientNet.from_pretrained('efficientnet-b0',weights_path='./pretrain_efficientNet/pretrain_efficientNet.pth')
     #torch.save(model_t.state_dict(), './pretrain_efficientNet/pretrain_efficientNet.pt')
     from proxyless_nas.jj import get_proxyless_model
     model_s = get_proxyless_model(net_config_path=opt.path_config)

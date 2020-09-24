@@ -211,8 +211,7 @@ def main():
     model_s = get_proxyless_model(net_config_path=opt.path_config)
     gpus = [0, 1, 2, 3]
     torch.cuda.set_device('cuda:{}'.format(gpus[0]))
-    model_t = nn.DataParallel(model_t.cuda(), device_ids=gpus, output_device=gpus[0])
-    model_s = nn.DataParallel(model_s.cuda(), device_ids=gpus, output_device=gpus[0])
+
 
     data = torch.randn(2, 3, 224, 224)
     model_t.eval()

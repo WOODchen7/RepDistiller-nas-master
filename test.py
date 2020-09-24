@@ -21,3 +21,8 @@ feat_s, ls = model_t(data, is_feat=True)
 feat_t, l = model_t(data, is_feat=True)
 print(l.shape)
 print(ls.shape)
+
+if os.path.exists('./save/log/'):
+        pass
+else:
+    os.mkdir('./save/log/')

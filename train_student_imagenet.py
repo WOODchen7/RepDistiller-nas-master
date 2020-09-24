@@ -14,6 +14,7 @@ import torch
 import torch.optim as optim
 import torch.nn as nn
 import torch.backends.cudnn as cudnn
+import torch.distributed as dist
 
 
 from models import model_dict
@@ -148,13 +149,17 @@ def print_log(print_string, log):
     log.flush()
 
 def main():
+
     best_acc = 0
 
     opt = parse_option()
 
     # tensorboard logger
     logger = tb_logger.Logger(logdir=opt.tb_folder, flush_secs=2)
-    os.mkdir('./save/log/')
+    if os.path.exists('./save/log/'):
+        pass
+    else:
+        os.mkdir('./save/log/')
     log = open(os.path.join('./save/log/', 'log_{}.txt'.format(opt.path_config[-11:-7])), 'w')
     print_log('save path : {}'.format("./save/"), log)
     # dataloader
@@ -204,6 +209,10 @@ def main():
     #torch.save(model_t.state_dict(), './pretrain_efficientNet/pretrain_efficientNet.pt')
     from proxyless_nas.jj import get_proxyless_model
     model_s = get_proxyless_model(net_config_path=opt.path_config)
+    gpus = [0, 1, 2, 3]
+    torch.cuda.set_device('cuda:{}'.format(gpus[0]))
+    model_t = nn.DataParallel(model_t.cuda(), device_ids=gpus, output_device=gpus[0])
+    model_s = nn.DataParallel(model_s.cuda(), device_ids=gpus, output_device=gpus[0])
 
     data = torch.randn(2, 3, 224, 224)
     model_t.eval()
